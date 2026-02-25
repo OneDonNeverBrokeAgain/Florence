@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Miss Florence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6b21a8; 
+            --accent: #facc15;  
+        }
+        
+        body {
+            margin: 0;
+            background: #0f172a;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            touch-action: manipulation;
+            overflow-x: hidden;
+        }
+
+        .cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Balloon Animation */
+        .balloon {
+            position: absolute;
+            bottom: -150px;
+            width: 50px;
+            height: 70px;
+            border-radius: 50%;
+            opacity: 0.8;
+            z-index: 10;
+            animation: floatUpward 8s linear forwards;
+        }
+
+        @keyframes floatUpward {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
+        }
+
+        /* Heart Pop Effect */
+        .heart {
+            position: absolute;
+            color: #ef4444;
+            font-size: 24px;
+            pointer-events: none;
+            animation: heartAnim 1s ease-out forwards;
+            z-index: 100;
+        }
+
+        @keyframes heartAnim {
+            0% { transform: scale(0) translateY(0); opacity: 1; }
+            100% { transform: scale(1.5) translateY(-100px); opacity: 0; }
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        /* Reveal Overlay */
+        #reveal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #4c1d95;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .pulse-btn {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(250, 204, 21, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 9 / 16;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+        }
+
+        /* Virtues Cloud */
+        .virtue-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            background: rgba(107, 33, 168, 0.3);
+            border: 1px solid var(--accent);
+            animation: floatIn 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatIn {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        /* Cake Candle */
+        .candle {
+            width: 10px;
+            height: 30px;
+            background: linear-gradient(to bottom, #facc15, #ca8a04);
+            position: relative;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        .flame {
+            width: 10px;
+            height: 15px;
+            background: #fb923c;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -15px;
+            animation: flicker 0.1s infinite;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="bg-slate-950">
+
+    <!-- Reveal Screen -->
+    <div id="reveal-overlay">
+        <h2 class="cursive text-4xl mb-6 text-yellow-400">Ready for your surprise?</h2>
+        <button onclick="reveal()" class="pulse-btn bg-yellow-400 text-purple-900 font-bold py-4 px-10 rounded-full text-xl shadow-2xl">
+            Tap to Open 🎁
+        </button>
+    </div>
+
+    <!-- Music Player -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-happybirthday.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Main Content -->
+    <main class="min-h-screen w-full flex flex-col items-center py-10 px-4 bg-gradient-to-b from-slate-950 via-purple-900/30 to-slate-950">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-12 z-20">
+            <h1 class="text-3xl md:text-5xl font-light tracking-widest uppercase mb-2 text-white/80">Happy Birthday</h1>
+            <h2 class="cursive text-6xl md:text-8xl text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]">Miss Florence Anfu-Keelson</h2>
+            
+            <!-- Countdown Timer -->
+            <div id="countdown" class="flex gap-4 justify-center mt-8 text-yellow-200">
+                <div class="glass-card px-4 py-2"><span id="days" class="text-2xl font-bold">00</span><br><small>Days</small></div>
+                <div class="glass-card px-4 py-2"><span id="hours" class="text-2xl font-bold">11</span><br><small>Hrs</small></div>
+                <div class="glass-card px-4 py-2"><span id="mins" class="text-2xl font-bold">39</span><br><small>Mins</small></div>
+                <div class="glass-card px-4 py-2"><span id="secs" class="text-2xl font-bold">40</span><br><small>Secs</small></div>
+            </div>
+        </header>
+
+        <!-- Virtues Cloud Section -->
+        <div class="max-w-3xl text-center mb-16 z-20">
+            <div class="flex flex-wrap justify-center">
+                <span class="virtue-tag">Kindhearted</span>
+                <span class="virtue-tag">Beautiful</span>
+                <span class="virtue-tag">Intelligent</span>
+                <span class="virtue-tag">Graceful</span>
+                <span class="virtue-tag">Unique</span>
+                <span class="virtue-tag">Ambitious</span>
+            </div>
+        </div>
+
+        <!-- Main Video & Message Section -->
+        <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-10 items-start z-20 mb-20">
+            <div class="flex flex-col items-center">
+                <div class="video-container shadow-[0_0_40px_rgba(107,33,168,0.5)]">
+                    <video controls class="w-full h-full object-cover">
+                        <source src="Flo1.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <p class="mt-4 cursive text-3xl text-yellow-400">Memories ✨</p>
+            </div>
+
+            <div class="space-y-8">
+                <div class="glass-card p-10 text-center relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-2 text-4xl opacity-20">🎉</div>
+                    <h3 class="text-3xl font-semibold text-yellow-400 mb-6">A Message For You</h3>
+                    <p class="text-gray-200 text-lg leading-relaxed italic">
+                        "Florence, you are a masterpiece in progress. On this day, I celebrate the incredible woman you are and the bright future you're building. May your year be filled with the same joy you bring to those around you."
+                    </p>
+                </div>
+
+                <div class="glass-card p-6 text-center">
+                    <p class="text-sm text-yellow-200/60 mb-4">Click the flame to blow it out!</p>
+                    <div class="flex justify-center items-end h-24">
+                        <div class="w-32 h-12 bg-pink-500 rounded-t-lg border-b-4 border-pink-700 relative">
+                             <div class="candle" id="mainCandle" onclick="extinguish()">
+                                <div class="flame" id="flame"></div>
+                             </div>
+                        </div>
+                    </div>
+                    <p class="mt-2 font-bold text-pink-300">Make a wish! 🕯️</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="w-full max-w-6xl mb-20 z-20">
+            <h3 class="text-center text-4xl cursive text-yellow-400 mb-10 text-white">Your Best Shots</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="h-64 glass-card overflow-hidden group">
+                    <img src="Florence.jpeg" alt="Memory" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-80 hover:opacity-100">
+                </div>
+                <div class="h-64 glass-card overflow-hidden group">
+                    <img src="Florence1.PNG" alt="Memory" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-80 hover:opacity-100">
+                </div>
+                <div class="h-64 glass-card overflow-hidden group">
+                    <img src="https://via.placeholder.com/400x600?text=Photo+3" alt="Memory" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-80 hover:opacity-100">
+                </div>
+                <div class="h-64 glass-card overflow-hidden group">
+                    <img src="https://via.placeholder.com/400x600?text=Photo+4" alt="Memory" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-80 hover:opacity-100">
+                </div>
+            </div>
+        </section>
+
+        <section class="w-full max-w-6xl z-20 px-4">
+            <h3 class="text-2xl font-bold text-white/50 mb-6 uppercase tracking-widest">More Memories</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="video-container h-64 border-purple-500/50">
+                    <video controls class="w-full h-full object-cover"><source src="Flo3.mp4" type="video/mp4"></video>
+                </div>
+                <div class="video-container h-64 border-purple-500/50">
+                    <video controls class="w-full h-full object-cover"><source src="Flo2.mp4" type="video/mp4"></video>
+                </div>
+                <div class="video-container h-64 border-purple-500/50">
+                    <video controls class="w-full h-full object-cover"><source src="Flo1.mp4" type="video/mp4"></video>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-20 py-10 opacity-40 text-sm text-center">
+            Designed with Heart for Miss Florence Anfu-Keelson<br>
+            &copy; One Don Never Broke Again
+        </footer>
+
+        <button onclick="toggleMusic()" class="fixed bottom-6 right-6 w-12 h-12 bg-yellow-400 rounded-full text-purple-900 flex items-center justify-center shadow-lg z-50">
+            <span id="musicIcon">🎵</span>
+        </button>
+    </main>
+
+    <script>
+        function reveal() {
+            document.getElementById('reveal-overlay').style.transform = 'translateY(-100%)';
+            document.body.style.overflow = 'auto';
+            startCelebration();
+            const music = document.getElementById('bgMusic');
+            music.play().catch(e => console.log("Autoplay blocked"));
+        }
+
+        // --- THE FIXED 12-HOUR COUNTDOWN LOGIC ---
+        // Setting target precisely to February 26th at 00:00:00
+        const targetDate = new Date(2026, 1, 26, 0, 0, 0).getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const gap = targetDate - now;
+
+            if (gap <= 0) {
+                document.getElementById('countdown').innerHTML = `
+                    <div class="text-center animate-bounce">
+                        <h2 class='text-3xl font-bold text-yellow-400'>HAPPY BIRTHDAY FLORENCE! 🥳</h2>
+                        <p class='text-white mt-2'>Your special day has arrived!</p>
+                    </div>`;
+                if (gap > -5000) confettiExplosion();
+                return;
+            }
+
+            const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
+            
+            // Calculate components
+            const d = Math.floor(gap / day);
+            const h = Math.floor((gap % day) / hour);
+            const m = Math.floor((gap % hour) / minute);
+            const s = Math.floor((gap % minute) / second);
+
+            // Force update UI
+            document.getElementById('days').innerText = String(d).padStart(2, '0');
+            document.getElementById('hours').innerText = String(h).padStart(2, '0');
+            document.getElementById('mins').innerText = String(m).padStart(2, '0');
+            document.getElementById('secs').innerText = String(s).padStart(2, '0');
+        }
+        
+        // Initial manual call
+        updateCountdown();
+        // Constant refresh
+        setInterval(updateCountdown, 1000);
+
+        function startCelebration() {
+            setInterval(createBalloon, 800);
+        }
+
+        function createBalloon() {
+            const colors = ['#a855f7', '#facc15', '#f472b6', '#60a5fa', '#fb923c'];
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.left = Math.random() * 95 + 'vw';
+            balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            balloon.style.width = (Math.random() * 30 + 30) + 'px';
+            balloon.style.height = (parseFloat(balloon.style.width) * 1.3) + 'px';
+            document.body.appendChild(balloon);
+            setTimeout(() => balloon.remove(), 8000);
+        }
+
+        function extinguish() {
+            const flame = document.getElementById('flame');
+            flame.style.display = 'none';
+            confettiExplosion();
+        }
+
+        function confettiExplosion() {
+            for(let i=0; i<60; i++) {
+                setTimeout(() => {
+                    createHeartAtPos(
+                        Math.random() * window.innerWidth, 
+                        Math.random() * window.innerHeight
+                    );
+                }, i * 50);
+            }
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'VIDEO' && e.target.tagName !== 'BUTTON') {
+                createHeartAtPos(e.clientX, e.clientY);
+            }
+        });
+
+        function createHeartAtPos(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = ['❤️', '💖', '✨', '🌸', '👑'][Math.floor(Math.random()*5)];
+            heart.style.left = (x - 12) + 'px';
+            heart.style.top = (y - 12) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1000);
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const icon = document.getElementById('musicIcon');
+            if (music.paused) {
+                music.play();
+                icon.innerText = "🎵";
+            } else {
+                music.pause();
+                icon.innerText = "🔇";
+            }
+        }
+    </script>
+</body>
+</html>
